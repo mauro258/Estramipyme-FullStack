@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(path = "/api/teachers")
 public class TeacherController {
@@ -28,7 +28,7 @@ public class TeacherController {
         return teacherService.getTeacherId(id);
     }
 
-    @GetMapping("email/{email}")
+    @GetMapping("/{email}")
     public ResponseEntity<List<Teacher>> getTeacherByEmail(@RequestParam String email) {
         List<Teacher> teachers = teacherService.findByEmail(email);
         return ResponseEntity.ok(teachers);
@@ -54,3 +54,4 @@ public class TeacherController {
         teacherService.deleteTeacherId(id);
     }
 }
+

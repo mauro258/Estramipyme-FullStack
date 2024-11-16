@@ -59,8 +59,8 @@ public class TeacherService {
             throw  new RuntimeException("La empresa no es valida");
         }
         TypeUser typeUser = typeUserRepository.findById(teacher.getType_user().getId()).orElse(null);
-        if  (empresa ==null) {
-            throw  new RuntimeException("La empresa no es valida");
+        if  (typeUser ==null) {
+            throw  new RuntimeException("TypeUser no es valida");
         }
 
         teacher.setEmpresa(empresa);
