@@ -32,26 +32,41 @@ export class AddStudentButtonComponent {
   addStudent() {
     console.log(this.studentForm.valid);
     if (this.studentForm.invalid) {
-      this.showErrorModal = true;
-      this.errorMessage = 'Por favor, complete todos los campos requeridos.';
-      return;
+        this.showErrorModal = true;
+        this.errorMessage = 'Por favor, complete todos los campos requeridos.';
+        return;
     }
 
     const studentData = this.studentForm.value;
-    this.http.post('http://localhost:8080/api/students', studentData).subscribe({
-      next: (response) => {
-        console.log('Estudiante creado exitosamente');
-        this.studentName = studentData.firstName; // Capturar el nombre del estudiante
-        this.showSuccessModal = true;
-        this.studentForm.reset();
-      },
-      error: (error) => {
-        console.error(error);
-        this.showErrorModal = true;
-        this.errorMessage = 'Error al crear el estudiante.';
-      }
+
+    // Mapear firstName a nombre y lastName a apellido antes de enviarlo
+    const studentDataMapped = {
+        ...studentData,
+        nombre: studentData.firstName,   // Mapear firstName a nombre
+        apellido: studentData.lastName,
+        telefono: studentData.phone,
+        typeUser: { id: 2 },             // Asignar tipo de usuario
+        empresa: { id: 5 }               // Asignar empresa
+    };
+
+    console.log('Datos del estudiante después del mapeo:', studentDataMapped);
+
+    this.http.post('http://localhost:8080/api/students', studentDataMapped).subscribe({
+        next: (response) => {
+            console.log('Estudiante creado exitosamente');
+            this.studentName = studentData.firstName; // Capturar el nombre del estudiante
+            this.showSuccessModal = true;
+            this.studentForm.reset();
+        },
+        error: (error) => {
+            console.error(error);
+            this.showErrorModal = true;
+            this.errorMessage = 'Error al crear el estudiante.';
+        }
     });
-  }
+}
+
+  
 
   closeErrorModal() {
     this.showErrorModal = false;

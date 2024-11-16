@@ -9,18 +9,11 @@ import { ApiService } from './api.service';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent implements OnInit {
+export class AppComponent  {
 
   data: any;
 
   constructor(private apiService: ApiService) { }
 
-  ngOnInit(): void {
-    this.apiService.getData().subscribe(response => {
-      this.data = response;
-      console.log(this.data);
-    }, error => {
-      console.error('Error al obtener datos', error);
-    });
-  }
+  
 }
