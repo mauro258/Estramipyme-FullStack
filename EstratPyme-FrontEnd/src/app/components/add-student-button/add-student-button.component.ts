@@ -22,10 +22,10 @@ export class AddStudentButtonComponent {
   constructor(private fb: FormBuilder, private http: HttpClient) {
     this.studentForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
+      nombre: ['', Validators.required],
+      apellido: ['', Validators.required],
       password: ['', Validators.required],
-      phone: ['', Validators.required]
+      telefono: ['', Validators.required]
     });
   }
 
@@ -39,14 +39,12 @@ export class AddStudentButtonComponent {
 
     const studentData = this.studentForm.value;
 
-    // Mapear firstName a nombre y lastName a apellido antes de enviarlo
+    
     const studentDataMapped = {
         ...studentData,
-        nombre: studentData.firstName,   // Mapear firstName a nombre
-        apellido: studentData.lastName,
-        telefono: studentData.phone,
-        typeUser: { id: 2 },             // Asignar tipo de usuario
-        empresa: { id: 5 }               // Asignar empresa
+        
+        typeUser: { id: 2 },           
+        empresa: { id: 5 }             
     };
 
     console.log('Datos del estudiante después del mapeo:', studentDataMapped);
@@ -54,7 +52,7 @@ export class AddStudentButtonComponent {
     this.http.post('http://localhost:8080/api/students', studentDataMapped).subscribe({
         next: (response) => {
             console.log('Estudiante creado exitosamente');
-            this.studentName = studentData.firstName; // Capturar el nombre del estudiante
+            this.studentName = studentData.firstName;
             this.showSuccessModal = true;
             this.studentForm.reset();
         },
@@ -77,20 +75,7 @@ export class AddStudentButtonComponent {
     this.showSuccessModal = false;
   }
   
-  addStudentToProject() {
-    if (this.studentFound) {
-      this.http.patch(`https://estramipyme-api.vercel.app/students/${this.studentName}`, { haceParteProyecto: true }).subscribe({
-        next: () => {
-          this.showSuccessModal = true;
-          this.studentFound = false;
-          this.studentForm.reset();
-        },
-        error: () => {
-          alert('Error al agregar el estudiante al proyecto');
-        }
-      });
-    }
-  }
+  
   
 
   

@@ -14,7 +14,6 @@ export class AddTeacherButtonComponent {
   showForm = false;
   teacherForm: FormGroup;
   teacherFound = false;
-  teacherId: number | null = null;
   teacherName: string | null = null; 
   showErrorModal = false;
   showSuccessModal = false;
@@ -22,62 +21,48 @@ export class AddTeacherButtonComponent {
 
   constructor(private fb: FormBuilder, private http: HttpClient) {
     this.teacherForm = this.fb.group({
-      id: [''],
-      email: ['', Validators.email]
+      email: ['', [Validators.required, Validators.email]],
+      name: ['', Validators.required],
+      surname: ['', Validators.required],
+      password: ['', Validators.required],
+      telephone: ['', Validators.required]
     });
   }
 
-  searchTeacher() {
-    const id = this.teacherForm.get('id')?.value;
-    const email = this.teacherForm.get('email')?.value;
-
-    if (!id && !email) {
-      this.showErrorModal = true;
-      this.errorMessage = 'Debe ingresar un ID o un correo de profesor.';
-      return;
-    }
-
-    const searchCriteria = id ? `id=${id}` : `email=${email}`;
-
-    this.http.get(`https://estramipyme-api.vercel.app/teachers?${searchCriteria}`).subscribe({
-      next: (teachers: any) => {
-        if (teachers.length === 0) {
-          this.showErrorModal = true;
-          this.errorMessage = 'No existe el profesor.';
-          this.teacherFound = false;
-          this.teacherId = null;
-          this.teacherName = null;
-        } else {
-          this.teacherFound = true;
-          this.teacherId = teachers[0].id;
-          this.teacherName = teachers[0].name;  // Guardar el nombre del profesor
-        }
-      },
-      error: () => {
+  addTeacher() {
+    console.log(this.teacherForm.valid);
+    if (this.teacherForm.invalid) {
         this.showErrorModal = true;
-        this.errorMessage = 'Error al buscar el profesor.';
-        this.teacherFound = false;
-        this.teacherId = null;
-        this.teacherName = null;
-      }
-    });
-  }
-
-  addTeacherToProject() {
-    if (this.teacherId !== null) {
-      this.http.patch(`https://estramipyme-api.vercel.app/teachers/${this.teacherId}`, { profesorParteProyecto: true }).subscribe({
-        next: () => {
-          this.showSuccessModal = true;
-          this.teacherFound = false;
-          this.teacherId = null;
-          this.teacherForm.reset();
-        },
-        error: () => {
-          alert('Error al agregar el profesor al proyecto');
-        }
-      });
+        this.errorMessage = 'Por favor, complete todos los campos requeridos.';
+        return;
     }
-  }
+
+    const teacherData = this.teacherForm.value;
+
+    
+    const teacherDataMapped = {
+        ...teacherData,
+        
+        type_user: { id: 3 },           
+        empresa: { id: 5 }             
+    };
+
+    console.log('Datos del estudiante después del mapeo:', teacherDataMapped);
+
+    this.http.post('http://localhost:8080/api/teachers', teacherDataMapped).subscribe({
+        next: (response) => {
+            console.log('profesor creado exitosamente');
+            this.teacherName = teacherData.firstName;
+            this.showSuccessModal = true;
+            this.teacherForm.reset();
+        },
+        error: (error) => {
+            console.error(error);
+            this.showErrorModal = true;
+            this.errorMessage = 'Error al crear el profesor.';
+        }
+    });
+}
 
   closeErrorModal() {
     this.showErrorModal = false;
