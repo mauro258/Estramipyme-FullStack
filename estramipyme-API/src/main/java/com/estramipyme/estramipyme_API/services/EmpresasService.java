@@ -44,6 +44,10 @@ public class EmpresasService {
             empresa.setNombreEmpresa(empresaDetails.getNombreEmpresa());
             empresa.setSizeCompany(empresaDetails.getSizeCompany());
             empresa.setTest(empresaDetails.getTest());
+            empresa.setPassword(empresaDetails.getPassword());
+            empresa.setEmail(empresaDetails.getEmail());
+            empresa.setTipoPersona(empresaDetails.getTipoPersona());
+            empresa.setIdentificacion(empresaDetails.getIdentificacion());
             return empresasRepository.save(empresa);
         }
         return null;
