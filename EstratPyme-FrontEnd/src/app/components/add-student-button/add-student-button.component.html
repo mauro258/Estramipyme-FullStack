@@ -1,0 +1,70 @@
+<div class="p-4">
+  <!-- Botón para mostrar el formulario -->
+  <button class="bg-blue-500 text-white px-4 py-2 rounded" (click)="showForm = !showForm">Agregar Estudiante</button>
+
+  <!-- Formulario de creación de estudiante -->
+  <form *ngIf="showForm" [formGroup]="studentForm" (ngSubmit)="addStudent()" class="mt-4 space-y-4">
+    <div>
+      <label for="studentEmail" class="block text-sm font-medium text-gray-700">Correo:</label>
+      <input id="studentEmail" formControlName="email" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+    </div>
+    <div>
+      <label for="studentFirstName" class="block text-sm font-medium text-gray-700">Nombre:</label>
+      <input id="studentFirstName" formControlName="firstName" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+    </div>
+    <div>
+      <label for="studentLastName" class="block text-sm font-medium text-gray-700">Apellido:</label>
+      <input id="studentLastName" formControlName="lastName" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+    </div>
+    <div>
+      <label for="studentPassword" class="block text-sm font-medium text-gray-700">Contraseña:</label>
+      <input type="password" id="studentPassword" formControlName="password" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+    </div>
+    <div>
+      <label for="studentPhone" class="block text-sm font-medium text-gray-700">Teléfono:</label>
+      <input id="studentPhone" formControlName="phone" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+    </div>
+
+    <!-- Botón para enviar el formulario -->
+    <button type="submit" [disabled]="studentForm.invalid" class="bg-blue-500 text-white px-4 py-2 rounded">Crear Estudiante</button>
+  </form>
+
+  <!-- Botón para agregar al proyecto (solo si el estudiante es encontrado) -->
+  <button *ngIf="studentFound" (click)="addStudentToProject()" class="mt-4 bg-green-500 text-white px-4 py-2 rounded">Agregar al Proyecto</button>
+
+  <!-- Modal de Error -->
+  <div *ngIf="showErrorModal" class="fixed z-10 inset-0 overflow-y-auto">
+    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+      <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+        <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+      </div>
+      <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+      <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+        <div class="bg-white p-4">
+          <h3 class="text-lg leading-6 font-medium text-gray-900">{{ errorMessage }}</h3>
+          <div class="mt-4 flex justify-center">
+            <button class="bg-red-500 text-white px-4 py-2 rounded" (click)="closeErrorModal()">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Confirmación de éxito -->
+  <div *ngIf="showSuccessModal" class="fixed z-10 inset-0 overflow-y-auto">
+    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+      <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+        <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+      </div>
+      <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+      <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+        <div class="bg-white p-4">
+          <h3 class="text-lg leading-6 font-medium text-gray-900">Estudiante "{{ studentName }}" agregado exitosamente al proyecto.</h3>
+          <div class="mt-4 flex justify-center">
+            <button class="bg-blue-500 text-white px-4 py-2 rounded" (click)="closeSuccessModal()">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
