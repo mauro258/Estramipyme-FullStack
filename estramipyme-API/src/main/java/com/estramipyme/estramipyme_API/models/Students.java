@@ -18,11 +18,11 @@ public class Students {
     private String telefono;
 
     @ManyToOne
-    @JoinColumn(name = "type_user", nullable = false)
+    @JoinColumn(name = "type_user")
     private TypeUser typeUser;
 
     @ManyToOne
-    @JoinColumn(name = "empresa", nullable = false)
+    @JoinColumn(name = "empresa")
     private Empresas empresa;
 
 
