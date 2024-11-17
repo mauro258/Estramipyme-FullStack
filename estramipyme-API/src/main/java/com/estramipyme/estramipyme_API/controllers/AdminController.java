@@ -3,33 +3,31 @@ package com.estramipyme.estramipyme_API.controllers;
 import java.util.List;
 import java.util.Optional;
 
+import com.estramipyme.estramipyme_API.models.Students;
+import com.estramipyme.estramipyme_API.services.AdminServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.estramipyme.estramipyme_API.Repositories.TypeUserRepository;
 import com.estramipyme.estramipyme_API.models.Admin;
 import com.estramipyme.estramipyme_API.models.TypeUser;
 import com.estramipyme.estramipyme_API.services.AdminService;
+import com.estramipyme.estramipyme_API.services.AdminServiceImpl;
 
 @RestController
 @RequestMapping("/api/administradores")
 public class AdminController {
     private final AdminService adminService;
     private final TypeUserRepository typeUserRepository;
+    private final  AdminServiceImpl  adminServiceImpl;
 
     @Autowired
-    public AdminController(AdminService adminService, TypeUserRepository typeUserRepository) {
+    public AdminController(AdminService adminService, TypeUserRepository typeUserRepository, AdminServiceImpl   adminServiceImpl) {
         this.adminService = adminService;
         this.typeUserRepository = typeUserRepository;
+        this.adminServiceImpl = adminServiceImpl;
     }
 
     @GetMapping
@@ -56,6 +54,12 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Ocurrió un error inesperado");
         }
+    }
+
+    @GetMapping("email/")
+    public ResponseEntity<List<Admin>> getAdminByEmail(@RequestParam String email) {
+        List<Admin> admins = adminServiceImpl.findByEmail(email);
+        return ResponseEntity.ok(admins);
     }
 
     @PostMapping

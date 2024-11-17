@@ -9,8 +9,8 @@ import { Admin } from '../models/admin';
   providedIn: 'root'
 })
 export class AuthService {
-  private baseUrl = 'https://estramipyme-api.vercel.app/usuarios';
-  private baseUrlAdmin= "https://estramipyme-api.vercel.app/admins"
+  private baseUrl = 'http://localhost:8080/api/teachers';
+  private baseUrlAdmin= "http://localhost:8080/api/administradores"
 
   isLoggedIn:boolean=false;
 
@@ -21,7 +21,7 @@ export class AuthService {
   }
 
   login(email: string, password: string): Observable<User | null> {
-    return this.http.get<User[]>(`${this.baseUrl}?email=${email}`).pipe(
+    return this.http.get<User[]>(`${this.baseUrl}/email/?email=${email}`).pipe(
       map(usuarios => {
         if (usuarios.length > 0) {
           const user = usuarios[0];
@@ -40,7 +40,7 @@ export class AuthService {
   }
 
   loginAdmin(email:string,password:string): Observable<User|null>{
-    return this.http.get<Admin[]>(`${this.baseUrlAdmin}?email=${email}`).pipe(
+    return this.http.get<Admin[]>(`${this.baseUrlAdmin}/email/?email=${email}`).pipe(
       map(admins => {
         if (admins.length > 0){
           const admin = admins[0];
