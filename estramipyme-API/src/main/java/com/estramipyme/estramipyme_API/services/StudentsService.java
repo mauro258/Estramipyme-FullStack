@@ -23,6 +23,10 @@ public class StudentsService {
     public Optional<Students> obtenerPorId(Integer id) {
         return studentRepository.findById(id);
     }
+    //consulta por correo
+    public List<Students> findByEmail(String email) {
+        return studentRepository.findByEmail(email);
+    }
 
     // Crear un nuevo estudiante
     public Students crearStudents(Students student) {

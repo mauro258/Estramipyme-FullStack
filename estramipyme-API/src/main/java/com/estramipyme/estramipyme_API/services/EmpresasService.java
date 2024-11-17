@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.estramipyme.estramipyme_API.Repositories.TestRepository;
 import com.estramipyme.estramipyme_API.Repositories.TipoPersonaRepository;
+import com.estramipyme.estramipyme_API.models.Students;
 import com.estramipyme.estramipyme_API.models.Test;
 import com.estramipyme.estramipyme_API.models.TipoPersona;
 
@@ -29,6 +30,10 @@ public class EmpresasService {
 
     public Empresas getEmpresaById(Long id) {
         return empresasRepository.findById(id).orElse(null);
+    }
+//consulta por correo
+    public List<Empresas> findByEmail(String email) {
+        return empresasRepository.findByEmail(email);
     }
 
     public Empresas saveEmpresa(Empresas empresa) {

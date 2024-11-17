@@ -1,6 +1,7 @@
 package com.estramipyme.estramipyme_API.controllers;
 
 import com.estramipyme.estramipyme_API.models.Empresas;
+import com.estramipyme.estramipyme_API.models.Students;
 import com.estramipyme.estramipyme_API.services.EmpresasService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,12 @@ public class EmpresasController {
     @GetMapping("/{id}")
     public Empresas getEmpresaById(@PathVariable Long id) {
         return empresasService.getEmpresaById(id);
+    }
+
+    @GetMapping("email/")
+    public ResponseEntity<List<Empresas>> getStudentsByEmail(@RequestParam String email) {
+        List<Empresas> empresas = empresasService.findByEmail(email);
+        return ResponseEntity.ok(empresas);
     }
 
     @PostMapping
