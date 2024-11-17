@@ -9,7 +9,7 @@ import { Admin } from '../models/admin';
   providedIn: 'root'
 })
 export class AuthService {
-  private baseUrl = 'http://localhost:8080/api/studens';
+  private baseUrl = 'http://localhost:8080/api/Empresas';
   private baseUrlAdmin= "http://localhost:8080/api"
 
   isLoggedIn:boolean=false;
@@ -42,9 +42,10 @@ export class AuthService {
   loginAdmin(email:string,password:string): Observable<User|null>{
   const adminRequest = this.http.get<Admin[]>(`${this.baseUrlAdmin}/administradores/email/?email=${email} `);
   const techerRequest = this.http.get<Admin[]> (`${this.baseUrlAdmin}/teachers/email/?email=${email}`);
+  const studentRequest = this.http.get<Admin[]> (`${this.baseUrlAdmin}/students/email/?email=${email}`);
 
-    return forkJoin([adminRequest, techerRequest]).pipe(
-      map(([admins,teachers]) => {
+    return forkJoin([adminRequest, techerRequest, studentRequest]).pipe(
+      map(([admins,teachers,students]) => {
         let validUser : Admin | null = null;
 
         //buscar en la tabla de administradores
@@ -59,6 +60,13 @@ export class AuthService {
           const teacher = teachers[0];
           if (password === teacher.password) {
             validUser = teacher;
+          }
+        }
+        //si no encuentra en las tablas anteriores buscar en students
+        if (!validUser && students.length > 0){
+          const student = students[0];
+          if (password === student.password) {
+            validUser = student;
           }
         }
         return validUser;

@@ -7,6 +7,7 @@ import com.estramipyme.estramipyme_API.models.Students;
 import com.estramipyme.estramipyme_API.models.TypeUser;
 import com.estramipyme.estramipyme_API.models.Empresas;
 
+import com.estramipyme.estramipyme_API.services.StudentsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +28,9 @@ public class StudentsController {
     @Autowired
     private EmpresasRepository empresasRepository;
 
+    @Autowired
+    private StudentsService studentsService;
+
     // Obtener todos los estudiantes
     @GetMapping
     public List<Students> getAllStudents() {
@@ -38,6 +42,12 @@ public class StudentsController {
     public ResponseEntity<Students> getStudentById(@PathVariable Integer id) {
         Optional<Students> student = studentRepository.findById(id);
         return student.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+// consulta por correo
+    @GetMapping("email/")
+    public ResponseEntity<List<Students>> getStudentsByEmail(@RequestParam String email) {
+        List<Students> students = studentsService.findByEmail(email);
+        return ResponseEntity.ok(students);
     }
 
     // Crear un nuevo estudiante
