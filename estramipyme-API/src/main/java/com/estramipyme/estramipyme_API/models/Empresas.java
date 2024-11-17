@@ -2,6 +2,7 @@ package com.estramipyme.estramipyme_API.models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -26,7 +27,7 @@ public class Empresas {
     private int sizeCompany;
 
     @Column(name = "password", nullable = false)
-    private int password;
+    private String password;
 
     @Column(name = "email", nullable = false)
     private String email;
@@ -43,7 +44,7 @@ public class Empresas {
     private Sector sector;
 
     @ManyToOne
-    @JoinColumn(name = "tipo_persona")
+    @JoinColumn(name = "tipo_persona_id", nullable = false)
     private TipoPersona tipoPersona;
 
     
@@ -74,11 +75,11 @@ public class Empresas {
     public void setSizeCompany(int sizeCompany) {
         this.sizeCompany = sizeCompany;
     }
-    public int getPassword() {
+    public String getPassword() {
         return password;
     }
 
-    public void setPassword(int password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 

@@ -4,15 +4,14 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
-@Table(name = "tipopersona")
+@Table(name = "tipo_personas")
 @Data
 
 public class TipoPersona {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idTipoPersona;
-    private String name_TipoPersona;
-    @Lob 
+
     private String description;
 
     public TipoPersona() {
@@ -20,8 +19,9 @@ public class TipoPersona {
 
     public TipoPersona(Long idTipoPersona, String name_TipoPersona, String description) {
         this.idTipoPersona = idTipoPersona;
-        this.name_TipoPersona = name_TipoPersona;
         this.description = description;
     }
+
+    
 }
 

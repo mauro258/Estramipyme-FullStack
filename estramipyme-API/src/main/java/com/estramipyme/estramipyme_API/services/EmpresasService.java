@@ -3,7 +3,10 @@ package com.estramipyme.estramipyme_API.services;
 import java.util.List;
 
 import com.estramipyme.estramipyme_API.Repositories.TestRepository;
+import com.estramipyme.estramipyme_API.Repositories.TipoPersonaRepository;
 import com.estramipyme.estramipyme_API.models.Test;
+import com.estramipyme.estramipyme_API.models.TipoPersona;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +20,8 @@ public class EmpresasService {
     private EmpresasRepository empresasRepository;
     @Autowired
     private TestRepository testRepository;
+    @Autowired
+    private TipoPersonaRepository tipoPersonaRepository;
 
     public List<Empresas> getAllEmpresas() {
         return empresasRepository.findAll();
@@ -27,13 +32,30 @@ public class EmpresasService {
     }
 
     public Empresas saveEmpresa(Empresas empresa) {
+        // Validación del Sector
         if (empresa.getSector() == null || empresa.getSector().getId() == null) {
             throw new RuntimeException("El sector no es válido.");
         }
+
+        // Validación y recuperación del Test (si existe)
         if (empresa.getTest() != null) {
-            Test test = testRepository.findById(empresa.getTest().getIdTest()).orElse(null); if (test == null) { throw new RuntimeException("El test no es válido."); } empresa.setTest(test); }
+            Test test = testRepository.findById(empresa.getTest().getIdTest()).orElse(null);
+            if (test == null) {
+                throw new RuntimeException("El test no es válido.");
+            }
+            empresa.setTest(test);
+        }
+
+        // Validación y recuperación del TipoPersona
+        if (empresa.getTipoPersona() != null) {
+            TipoPersona tipoPersona = tipoPersonaRepository.findById(empresa.getTipoPersona().getIdTipoPersona())
+                .orElseThrow(() -> new RuntimeException("El TipoPersona no es válido."));
+            empresa.setTipoPersona(tipoPersona);
+        }
+
         return empresasRepository.save(empresa);
     }
+
 
     public Empresas updateEmpresa(Long id, Empresas empresaDetails) {
         Empresas empresa = empresasRepository.findById(id).orElse(null);
