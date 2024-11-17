@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { User } from '../models/user';
-import { catchError, map, Observable, of } from 'rxjs';
+import { catchError, forkJoin, map, Observable, of } from 'rxjs';
 import { Admin } from '../models/admin';
 
 
@@ -9,8 +9,8 @@ import { Admin } from '../models/admin';
   providedIn: 'root'
 })
 export class AuthService {
-  private baseUrl = 'http://localhost:8080/api/teachers';
-  private baseUrlAdmin= "http://localhost:8080/api/administradores"
+  private baseUrl = 'http://localhost:8080/api/studens';
+  private baseUrlAdmin= "http://localhost:8080/api"
 
   isLoggedIn:boolean=false;
 
@@ -40,20 +40,32 @@ export class AuthService {
   }
 
   loginAdmin(email:string,password:string): Observable<User|null>{
-    return this.http.get<Admin[]>(`${this.baseUrlAdmin}/email/?email=${email}`).pipe(
-      map(admins => {
+  const adminRequest = this.http.get<Admin[]>(`${this.baseUrlAdmin}/administradores/email/?email=${email} `);
+  const techerRequest = this.http.get<Admin[]> (`${this.baseUrlAdmin}/teachers/email/?email=${email}`);
+
+    return forkJoin([adminRequest, techerRequest]).pipe(
+      map(([admins,teachers]) => {
+        let validUser : Admin | null = null;
+
+        //buscar en la tabla de administradores
         if (admins.length > 0){
           const admin = admins[0];
-
           if(password===admin.password){
-            return admin;
-          }else{
-            return null;
+            validUser = admin;
           }
-        }else{
-          return null;
         }
+        // si no se encuentra en Administradores, buscar en teachers
+        if (!validUser && teachers.length > 0){
+          const teacher = teachers[0];
+          if (password === teacher.password) {
+            validUser = teacher;
+          }
+        }
+        return validUser;
+
       }),
+
+        
       catchError(()=> of(null))
     );
   }
