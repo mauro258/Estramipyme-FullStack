@@ -22,7 +22,7 @@ public class Students {
     private TypeUser typeUser;
 
     @ManyToOne
-    @JoinColumn(name = "empresa", nullable = false)
+    @JoinColumn(name = "empresa_id", nullable = false)
     private Empresas empresa;
 
 
