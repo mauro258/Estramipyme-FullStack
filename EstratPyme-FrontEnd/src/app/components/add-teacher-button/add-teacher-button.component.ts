@@ -44,7 +44,7 @@ export class AddTeacherButtonComponent {
         ...teacherData,
         
         type_user: { id: 3 },           
-        empresa: { id: 5 }             
+        empresa: { id: 7 }             
     };
 
     console.log('Datos del estudiante después del mapeo:', teacherDataMapped);
