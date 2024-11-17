@@ -28,7 +28,7 @@ public class TeacherController {
         return teacherService.getTeacherId(id);
     }
 
-    @GetMapping("email/{email}")
+    @GetMapping("email/")
     public ResponseEntity<List<Teacher>> getTeacherByEmail(@RequestParam String email) {
         List<Teacher> teachers = teacherService.findByEmail(email);
         return ResponseEntity.ok(teachers);

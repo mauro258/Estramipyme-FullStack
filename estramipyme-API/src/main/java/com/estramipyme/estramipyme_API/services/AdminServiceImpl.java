@@ -3,6 +3,7 @@ package com.estramipyme.estramipyme_API.services;
 import java.util.List;
 import java.util.Optional;
 
+import com.estramipyme.estramipyme_API.models.Students;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,10 @@ public class AdminServiceImpl implements AdminService{
     public Admin findById(Long id) {
         Optional<Admin> optional = adminRepository.findById(id);
         return optional.orElse(null);
+    }
+
+    public List<Admin> findByEmail(String email) {
+        return adminRepository.findByEmail(email);
     }
 
      @Override
