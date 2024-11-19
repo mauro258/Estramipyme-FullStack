@@ -13,8 +13,8 @@ Paso a paso para conectar MySQL Workbench a Aiven
 - Connection Method: Asegúrate de que esté seleccionada la opción "Standard (TCP/IP)".
 - Hostname: mysql-18708054-estramipyme-d7b5.h.aivencloud.com
 - Port: 26866
-- Username: 
-- Password: 
+- Username: Visualizar documento DescripcionProyectoBack-ES
+- Password: Visualizar documento DescripcionProyectoBack-ES
 
 3. Probar la conexión:
 
@@ -72,8 +72,8 @@ Sigue estos pasos para configurar y conectar tu proyecto Spring Boot a la base d
 spring.application.name=estramipymeAPI
 # Configuración de la base de datos
 spring.datasource.url=jdbc:mysql://mysql-18708054-estramipyme-d7b5.h.aivencloud.com:26866/estramipyme
-spring.datasource.username=
-spring.datasource.password=
+spring.datasource.username=Visualizar documento DescripcionProyectoBack-ES
+spring.datasource.password=Visualizar documento DescripcionProyectoBack-ES
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 # Configuración de JPA
 spring.jpa.hibernate.ddl-auto=update
